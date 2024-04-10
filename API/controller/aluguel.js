@@ -1,4 +1,4 @@
-const con = require('../connect/connect').con;
+const con = require('../connect/connect.js');
 
 const read = (req, res) => {
     con.query('SELECT * FROM Aluguel', (err, result) => {
