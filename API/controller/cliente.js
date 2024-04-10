@@ -1,4 +1,4 @@
-const con = require('../CONNECTION/connect').con;
+const con = require('../connect/connect').con;
 
 const create = (req, res) => {
     const { nome_cliente, cpf, telefone } = req.body;

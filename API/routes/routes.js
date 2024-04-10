@@ -1,10 +1,10 @@
 const express = require('express');
 const routes = express.Router();
 
-const veiculo = require('./CONTROLLERS/veiculo');
-const cliente = require('./CONTROLLERS/cliente');
-const telefone = require('./CONTROLLERS/telefone');
-const aluguel = require('./CONTROLLERS/aluguel');
+const veiculo = require('../controller/veiculo');
+const cliente = require('../controller/cliente');
+const telefone = require('../controller/telefone');
+const aluguel = require('../controller/aluguel');
 
 routes.get( '/', (req, res) => {  
     return res.status(200).json({ message: 'Server Rodando 🎉👏🙌🙏' });  
