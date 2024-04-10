@@ -2,8 +2,7 @@ const con = require('../connect/connect');
 
 const create = (req, res) => {
     const { nome_cliente, cpf, telefone } = req.body;
-    const sql = `INSERT INTO Cliente (nome_cliente, cpf) VALUES (?, ?)`;
-    con.query(sql, [nome_cliente, cpf], (err, result) => {
+    con.query('INSERT INTO Cliente (nome_cliente, cpf) VALUES (?, ?)', [nome_cliente, cpf], (err, result) => {
         if(err) {
             if(err.code == 'ER_DUP_ENTRY') {
                 res.status(409).json('Ja existe um cliente com esse CPF');
@@ -11,13 +10,12 @@ const create = (req, res) => {
                 res.status(500).json(err);
             }
         } else {
-            res.status(201).json(req.body);
+            res.status(201).json(result);
         }
     });
 
     if(telefone != null) {
-        const sql2 = `INSERT INTO Telefone (cpf, numero) VALUES (?, ?)`;
-        con.query(sql2, [cpf, telefone]);
+        const sql2 = (`INSERT INTO Telefone (cpf, numero) VALUES (?, ?)`, [cpf, telefone]);
     }
 }
 
@@ -33,30 +31,30 @@ const read = (req, res) => {
 };
 
 const update = (req, res) => {
-    const { nome_cliente, cpf, telefone } = req.body;
-    const sql = `UPDATE Cliente SET nome_cliente = ?, cpf = ? WHERE cpf = ?`;
-    con.query(sql, [nome_cliente, cpf, cpf], (err, result) => {
+    const { cpf } = req.params;
+    const { nome_cliente, telefone } = req.body;
+
+    con.query('UPDATE Cliente SET nome_cliente = ?, cpf = ? WHERE cpf = ?', [nome_cliente, cpf, cpf], (err, result) => {
         if(err) {
             res.status(500).json(err);
         } else {
-            res.status(200).json(req.body);
+            res.status(200).json(result);
         }
     });
 
     if(telefone != null) {
-        const sql2 = `UPDATE Telefone SET telefone = ? WHERE id = ?`;
-        con.query(sql2, [telefone, id]);
+        con.query('UPDATE Telefone SET numero = ? WHERE cpf = ?', [telefone, cpf]);
     }
 };
 
 const del = (req, res) => {
     const { cpf } = req.params;
-    const sql = `DELETE FROM Cliente WHERE cpf = ?`;
-    con.query(sql, [cpf], (err, result) => {
+    
+    con.query('DELETE FROM Cliente WHERE cpf = ?', [cpf], (err, result) => {
         if(err) {
             res.status(500).json(err);
         } else {
-            res.status(200).json(req.body);
+            res.status(200).json(result);
         }
     });
 }
